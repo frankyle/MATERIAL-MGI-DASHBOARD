@@ -45,10 +45,10 @@ axiosInstance.interceptors.response.use(
       } catch (refreshError) {
         console.error('Token refresh failed:', refreshError);
 
-        // Optional: Clear tokens and redirect to login
+        // Optional: Clear tokens and redirect to/auth/sign-in
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
-        window.location.href = '/login'; // Adjust as needed
+        window.location.href = '/auth/sign-in'; // Adjust as needed
         return Promise.reject(refreshError);
       }
     }

@@ -16,6 +16,9 @@ import RiskTradeUpdate from "./pages/MGI/RiskTrade/RiskTradeUpdate";
 import TaskCreate from "./pages/MGI/TaskPlans/TaskCreate";
 import TaskDetails from "./pages/MGI/TaskPlans/TaskDetails";
 import TaskUpdate from "./pages/MGI/TaskPlans/TaskUpdate";
+import TradingReasonsCreate from "./pages/MGI/TradeReasons/TradeReasonsCreate";
+import TradeReasonsView from "./pages/MGI/TradeReasons/TradeReasonsView";
+import TradeReasonsUpdate from "./pages/MGI/TradeReasons/TradeReasonsUpdate";
 
 function App() {
   return (
@@ -28,6 +31,10 @@ function App() {
       <Route path="/trade-details-create" element={<TradingDetailsCreate />} />
       <Route path="/trade-details/:id" element={<TradeDetailsView />} />
       <Route path="/trade-details-edit/:id" element={<TradeDetailsUpdate />} />
+      
+      <Route path="/trade-reasons-create" element={<TradingReasonsCreate />} />
+      <Route path="/trade-reasons/:id" element={<TradeReasonsView />} />
+      <Route path="/trade-reasons-edit/:id" element={<TradeReasonsUpdate />} />
 
       <Route path="/indicators-create" element={<IndicatorsCreate />} />
       <Route path="/indicators-view/:id" element={<IndicatorsView />} />

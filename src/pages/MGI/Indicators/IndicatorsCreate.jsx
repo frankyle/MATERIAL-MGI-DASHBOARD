@@ -6,9 +6,9 @@ import { FaSave, FaUndo } from 'react-icons/fa';
 const IndicatorsCreate = () => {
   const navigate = useNavigate();
 
-  const [tradeDetails, setTradeDetails] = useState([]);
+  const [tradeReasons, setTradeReasons] = useState([]);
   const [formData, setFormData] = useState({
-    trade_detail: '', // Default selected trade detail
+    trade_reason: '', // Default selected trade reason
     candle_pattern: '',
     fibonacci_level: '',
     session: '',
@@ -29,24 +29,24 @@ const IndicatorsCreate = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchTradeDetails = async () => {
+    const fetchTradeReasons = async () => {
       try {
-        const response = await axiosInstance.get('/api/tradedetails/tradedetails/');
+        const response = await axiosInstance.get('/api/tradereasons/tradereasons/');
         if (response.data && Array.isArray(response.data.results)) {
           const sortedTrades = response.data.results.sort((a, b) => b.is_active - a.is_active);
-          setTradeDetails(sortedTrades);
+          setTradeReasons(sortedTrades);
         } else {
           console.error('Unexpected response format:', response.data);
         }
       } catch (error) {
-        console.error('Error fetching trade details:', error);
-        setError('Failed to load trade details.'); // Set error message
+        console.error('Error fetching trade reasons:', error);
+        setError('Failed to load trade reasons.'); // Set error message
       } finally {
         setLoading(false);
       }
     };
 
-    fetchTradeDetails();
+    fetchTradeReasons();
   }, []);
 
   const handleInputChange = (e) => {
@@ -85,17 +85,17 @@ const IndicatorsCreate = () => {
       <h1 className="text-3xl font-semibold mb-6 text-center">Create New Trading Indicators</h1>
 
       <form onSubmit={handleCreate} className="space-y-6">
-        {/* Dropdown for trade details */}
+        {/* Dropdown for trade reasons */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="trade_detail" className="text-lg font-medium">Currency Pair</label>
+          <label htmlFor="trade_reason" className="text-lg font-medium">Currency Pair</label>
           <select
-            name="trade_detail"
-            value={formData.trade_detail}
+            name="trade_reason"
+            value={formData.trade_reason}
             onChange={handleInputChange}
             className="px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             <option value="">Select Currency Pair</option>
-            {tradeDetails.map((trade) => (
+            {tradeReasons.map((trade) => (
               <option key={trade.id} value={trade.id}>
                 {trade.currency_pair || `Trade ID: ${trade.id}`} {/* Adjusted to display currency_pair */}
               </option>

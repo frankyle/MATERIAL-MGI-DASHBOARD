@@ -83,7 +83,7 @@ const CandleImages = () => {
           {Array.isArray(candleImages) && candleImages.length > 0 ? (
             candleImages.map((candleImage) => (
               <tr key={candleImage.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td className="px-6 py-4">{candleImage.currency_pair}</td>
+                <td className="px-6 py-4 text-black font-bold">{candleImage.currency_pair}</td>
                 {['monday_candle', 'tuesday_candle', 'wednesday_candle', 'thursday_candle', 'friday_candle', 'saturday_candle', 'sunday_candle', 'swing_trade_candle'].map((key) => (
                   <td key={key} className="px-6 py-4">
                     <img

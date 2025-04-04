@@ -10,7 +10,7 @@ const CandleImagesUpdate = () => {
   const [candleImages, setCandleImages] = useState(null);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
-    trade_detail: id, // Assuming the 'id' is passed from the TradeDetails route
+    trade_reason: id, 
   });
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const CandleImagesUpdate = () => {
         if (response.data) {
           setCandleImages(response.data);
           setFormData({
-            trade_detail: id, // Make sure trade_detail is correctly set
+            trade_reason: id, // Make sure trade_reason is correctly set
             ...response.data,
           });
         } else {
@@ -51,8 +51,8 @@ const CandleImagesUpdate = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     const data = new FormData();
-    // Append trade_detail to the form data
-    data.append('trade_detail', formData.trade_detail);
+    // Append trade_reason to the form data
+    data.append('trade_reason', formData.trade_reason);
     Object.keys(formData).forEach((key) => {
       if (formData[key] instanceof File) {
         data.append(key, formData[key]);

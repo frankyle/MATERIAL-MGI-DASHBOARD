@@ -10,16 +10,16 @@ import {
   BellAlertIcon,
   ArrowRightOnRectangleIcon,
   UserPlusIcon,
+  InformationCircleIcon 
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
-import Login from "./pages/auth/Login";
 import TradeDetailsTable from "./pages/MGI/TradingDetails/TradeDetailsTable";
 import IndicatorsTable from "./pages/MGI/Indicators/IndicatorsTable";
 import RiskTradesTable from "./pages/MGI/RiskTrade/RiskTradeTable";
 import CandleImages from "./pages/MGI/CandlesImages/CandleImages";
-import TradingDetailsCreate from "./pages/MGI/TradingDetails/TradingDetailsCreate";
 import TasksTable from "./pages/MGI/TaskPlans/TasksTable";
+import TradeReasonsTable from "./pages/MGI/TradeReasons/TradeReasonsTable";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -52,6 +52,12 @@ export const routes = [
         name: "Trading Idea",
         path: "/trading-Idea",
         element: <TradeDetailsTable />,
+      },
+      {
+        icon: <InformationCircleIcon  {...icon} />,
+        name: "Trading Reasons",
+        path: "/trading-reasons",
+        element: <TradeReasonsTable />,
       },
       {
         icon: <ChartBarIcon {...icon} />,
