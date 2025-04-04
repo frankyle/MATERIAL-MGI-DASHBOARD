@@ -74,7 +74,7 @@ const IndicatorsTable = () => {
           {tradingIndicators.length > 0 ? (
             tradingIndicators.map((indicator) => (
               <tr key={indicator.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td className="px-6 py-4 text-black font-bold text-lg">{indicator.currency_pair}</td>
+                <td className="px-6 py-4 text-black font-bold">{indicator.currency_pair}</td>
                 <td className="px-6 py-4 text-black">{indicator.candle_pattern}</td>
                 <td className="px-6 py-4 text-black">{indicator.fibonacci_level}</td>
                 <td className="px-6 py-4 text-black">{indicator.session}</td>
