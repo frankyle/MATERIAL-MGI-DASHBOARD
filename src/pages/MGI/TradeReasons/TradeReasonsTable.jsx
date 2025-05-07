@@ -113,11 +113,11 @@ const TradeReasonsTable = () => {
             <th scope="col" className="px-6 py-3">Youtube Idea</th>
             <th scope="col" className="px-6 py-3">Volumetic Rejection Candle</th>
             <th scope="col" className="px-6 py-3">Fibonnaci Candle</th>
-            <th scope="col" className="px-6 py-3">ICT Killzone Candle</th>
-            <th scope="col" className="px-6 py-3">Ichimoku Candle</th>
-            <th scope="col" className="px-6 py-3">EMA Cross Alert Candle</th>
-            <th scope="col" className="px-6 py-3">ICT Institutional Order Candle(30min)</th>
+            <th scope="col" className="px-6 py-3">Order block & Breaker</th>
             <th scope="col" className="px-6 py-3">Daily High Low Candle(15min)</th>
+            <th scope="col" className="px-6 py-3">ICT Killzone Candle</th>
+            <th scope="col" className="px-6 py-3">UT Alert Candle</th>
+            <th scope="col" className="px-6 py-3">ICT FVG/Inv FVG(15min/30min)</th>
             <th scope="col" className="px-6 py-3">All Indicators Candle</th>
             <th scope="col" className="px-6 py-3">Blog Trade Post Candle</th>
             <th scope="col" className="px-6 py-3">Blog Mt5 Post Candle</th>
@@ -181,24 +181,33 @@ const TradeReasonsTable = () => {
               </td>
               <td className="px-6 py-4">
                 <img
-                  src={trade.ICT_killzone_candle}
-                  alt="ICT Killzone Candle"
-                  className="w-24 h-24 object-contain cursor-pointer"
-                  onClick={() => openModal(trade.ICT_killzone_candle)}
-                />
-              </td>
-              <td className="px-6 py-4">
-                <img
                   src={trade.ichimoku_candle}
-                  alt="Ichimoku Candle"
+                  alt="Order block & Breaker"
                   className="w-24 h-24 object-contain cursor-pointer"
                   onClick={() => openModal(trade.ichimoku_candle)}
                 />
               </td>
               <td className="px-6 py-4">
                 <img
+                  src={trade.daily_high_low_candle}
+                  alt="Daily High Low Candle"
+                  className="w-24 h-24 object-contain cursor-pointer"
+                  onClick={() => openModal(trade.daily_high_low_candle)}
+                />
+              </td>
+              <td className="px-6 py-4">
+                <img
+                  src={trade.ICT_killzone_candle}
+                  alt="ICT Killzone Candle"
+                  className="w-24 h-24 object-contain cursor-pointer"
+                  onClick={() => openModal(trade.ICT_killzone_candle)}
+                />
+              </td>
+              
+              <td className="px-6 py-4">
+                <img
                   src={trade.ema_cross_alert_candle}
-                  alt="EMA Cross Alert Candle"
+                  alt="UT Alert Candle"
                   className="w-24 h-24 object-contain cursor-pointer"
                   onClick={() => openModal(trade.ema_cross_alert_candle)}
                 />
@@ -211,14 +220,7 @@ const TradeReasonsTable = () => {
                   onClick={() => openModal(trade.ICT_institutional_order_candle)}
                 />
               </td>
-              <td className="px-6 py-4">
-                <img
-                  src={trade.daily_high_low_candle}
-                  alt="Daily High Low Candle"
-                  className="w-24 h-24 object-contain cursor-pointer"
-                  onClick={() => openModal(trade.daily_high_low_candle)}
-                />
-              </td>
+             
               <td className="px-6 py-4">
                 <img
                   src={trade.all_indicators_candle}
