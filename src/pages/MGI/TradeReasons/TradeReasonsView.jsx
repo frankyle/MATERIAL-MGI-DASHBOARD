@@ -6,30 +6,24 @@ const TradeReasonsView = () => {
   const [trade, setTrade] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const { id } = useParams(); // Get the trade id from the URL
+  const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTradeDetails = async () => {
       try {
         const response = await axiosInstance.get(`/api/tradereasons/tradereasons/${id}/`);
-        if (response.data) {
-          setTrade(response.data);
-        } else {
-          console.error('No trade data found for this ID');
-        }
+        setTrade(response.data);
       } catch (error) {
         console.error('Error fetching trade reasons:', error);
       }
     };
-
     fetchTradeDetails();
   }, [id]);
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', {
-      weekday: 'short',
+    return new Date(dateString).toLocaleDateString('en-GB', {
+      weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -43,132 +37,138 @@ const TradeReasonsView = () => {
 
   const closeModal = () => {
     setModalOpen(false);
-    setCurrentImageIndex(0);
   };
 
   const handleNextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
+    setCurrentImageIndex((prev) => (prev + 1) % imageUrls.length);
   };
 
   const handlePrevImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + imageUrls.length) % imageUrls.length);
+    setCurrentImageIndex((prev) => (prev - 1 + imageUrls.length) % imageUrls.length);
   };
-
-  if (!trade) {
-    return <div>Loading...</div>;
-  }
 
   const imageFields = {
     idea_candle: 'Idea Candle',
     idea_candle_two: 'Idea Candle Two',
-    youtube_candle: 'Youtube Candle',
-    volumetic_rejection_candle: 'Volumetic Rejection Candle',
-    fibonnaci_candle: 'Fibonnaci Candle',
-    ICT_killzone_candle: 'ICT Killzon Candle',
+    youtube_candle: 'YouTube Candle',
+    volumetic_rejection_candle: 'Volumetric Rejection Candle',
+    fibonnaci_candle: 'Fibonacci Candle',
+    ICT_killzone_candle: 'ICT Killzone Candle',
     ichimoku_candle: 'Ichimoku Candle',
-    ema_cross_alert_candle: 'Ema cross Alert Candle',
+    ema_cross_alert_candle: 'EMA Cross Alert Candle',
     ICT_institutional_order_candle: 'ICT Institutional Order Candle',
-    daily_high_low_candle: 'Daily High Low Candle',
+    daily_high_low_candle: 'Daily High/Low Candle',
     all_indicators_candle: 'All Indicators Candle',
     blog_trade_post_candle: 'Blog Trade Post Candle',
-    blog_mt5_post_candle: 'Blog Mt5 Post Candle',
+    blog_mt5_post_candle: 'Blog MT5 Post Candle',
     stoploss_candle: 'Stop Loss Candle',
   };
 
   const imageUrls = Object.entries(imageFields)
-    .map(([key, label]) => ({
-      url: trade[key],
-      label,
-    }))
-    .filter(({ url }) => url); // Filter out any null or undefined images
+    .map(([key, label]) => ({ url: trade?.[key], label }))
+    .filter(({ url }) => url);
+
+  if (!trade) {
+    return <div className="text-center text-gray-500 mt-16 text-lg">Loading trade details...</div>;
+  }
 
   return (
-    <div className="p-4 max-w-7xl mx-auto">
-      <h1 className="text-2xl font-semibold mb-4">Trade Details</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-        <div>
-          <strong>Currency Pair:</strong> {trade.currency_pair}
-        </div>
-        <div>
-          <strong>Traders Idea Name:</strong> {trade.traders_idea_name}
-        </div>
-        <div>
-          <strong>Trade Signal:</strong> {trade.trade_signal}
-        </div>
-        <div>
-          <strong>Status:</strong>
-          <span className={`px-2 py-1 ${trade.is_active ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
-            {trade.is_active ? 'Active' : 'Inactive'}
-          </span>
-        </div>
-        <div>
-          <strong>Created At:</strong> {formatDate(trade.created_at)}
-        </div>
-      </div>
+    <div className="max-w-6xl mx-auto px-4 py-10">
+      <h1 className="text-4xl font-bold text-gray-900 mb-2">📈 {trade.currency_pair} - Trade Breakdown</h1>
+      <p className="text-lg text-gray-600 mb-8">A deep dive into this trade's logic, setup, and visual confirmation tools.</p>
 
-      <h2 className="text-xl font-semibold mb-4">Candles</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        {Object.entries(imageFields).map(([key, label], index) => (
-          <div key={key}>
-            <strong>{label}:</strong>
-            {trade[key] ? (
-              <img
-                src={trade[key]}
-                alt={label}
-                className="w-24 h-24 object-contain cursor-pointer"
-                onClick={() => openModal(index)} // Open modal with the current index
-              />
-            ) : (
-              <p className="text-gray-500">No image available for {label}</p>
-            )}
-          </div>
-        ))}
-      </div>
+      <section className="border-t border-gray-200 pt-6 mb-10">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">🧾 Trade Summary</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 text-base">
+          <p><strong>Pair:</strong> {trade.currency_pair}</p>
+          <p><strong>Idea Name:</strong> {trade.traders_idea_name}</p>
+          <p><strong>Signal:</strong> {trade.trade_signal}</p>
+          <p>
+            <strong>Status:</strong>
+            <span className={`ml-2 px-3 py-1 rounded-full text-white ${trade.is_active ? 'bg-green-600' : 'bg-red-600'}`}>
+              {trade.is_active ? 'Active' : 'Inactive'}
+            </span>
+          </p>
+          <p><strong>Posted On:</strong> {formatDate(trade.created_at)}</p>
+        </div>
+      </section>
 
-      <div className="mt-8 flex gap-4">
+      <section className="border-t border-gray-200 pt-6 mb-12">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">🖼️ Candle Confirmations</h2>
+        <p className="text-gray-600 mb-6 text-sm">
+          These candles are used to validate the trading idea with various confirmations across indicators and price structure.
+        </p>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+          {Object.entries(imageFields).map(([key, label], index) => (
+            <div key={key} className="text-center">
+              <p className="text-sm font-medium mb-1 text-gray-700">{label}</p>
+              {trade[key] ? (
+                <img
+                  src={trade[key]}
+                  alt={label}
+                  onClick={() => openModal(index)}
+                  className="w-full h-28 object-cover rounded-lg shadow cursor-pointer hover:scale-105 hover:shadow-lg transition-transform duration-200 ease-in-out"
+                />
+              ) : (
+                <p className="text-gray-400 text-sm italic">No image available</p>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div className="flex flex-wrap gap-4">
         <button
           onClick={() => navigate('/trade-reasons')}
-          className="px-4 py-2 bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-700"
+          className="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition"
         >
-          Back to Trade Details
+          ← Back to List
         </button>
-
         <button
-          onClick={() => navigate(`/trade-reasons-edit/${id}`)} // Redirect to the edit page
-          className="px-4 py-2 bg-orange-500 text-white rounded-full shadow-md hover:bg-orange-700"
+          onClick={() => navigate(`/trade-reasons-edit/${id}`)}
+          className="px-6 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition"
         >
-          Edit Trade
+          ✏️ Edit Trade Entry
         </button>
       </div>
 
-      {/* Modal for displaying the selected image with navigation */}
       {modalOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+          className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50"
           onClick={closeModal}
         >
           <div
-            className="bg-white p-4 rounded-lg max-w-full max-h-full overflow-auto relative"
+            className="bg-white p-6 rounded-xl w-full max-w-3xl max-h-[90vh] overflow-auto relative shadow-lg"
             onClick={(e) => e.stopPropagation()}
           >
+            <h3 className="text-xl font-semibold text-center mb-4 text-gray-800">
+              {imageUrls[currentImageIndex]?.label}
+            </h3>
             <img
               src={imageUrls[currentImageIndex]?.url}
-              alt="Selected"
-              className="max-w-full max-h-screen object-contain"
+              alt={imageUrls[currentImageIndex]?.label}
+              className="max-w-full max-h-[70vh] mx-auto object-contain"
             />
             <button
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
               onClick={handlePrevImage}
-              disabled={imageUrls.length <= 1} // Disable if there's only one image
+              disabled={imageUrls.length <= 1}
             >
               &lt;
             </button>
             <button
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full"
               onClick={handleNextImage}
-              disabled={imageUrls.length <= 1} // Disable if there's only one image
+              disabled={imageUrls.length <= 1}
             >
               &gt;
+            </button>
+            <button
+              onClick={closeModal}
+              className="absolute top-4 right-4 text-gray-600 hover:text-red-600 text-xl font-bold"
+            >
+              ✕
             </button>
           </div>
         </div>

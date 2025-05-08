@@ -5,6 +5,9 @@ import axiosInstance from '../../auth/axiosInstance';
 const RiskTradeDetails = () => {
   const [riskTrade, setRiskTrade] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [images, setImages] = useState([]);
   const { id } = useParams(); // Assuming the risk trade ID is passed in the URL
   const navigate = useNavigate();
 
@@ -13,6 +16,14 @@ const RiskTradeDetails = () => {
       try {
         const response = await axiosInstance.get(`/api/risktrades/risktrades/${id}/`);
         setRiskTrade(response.data);
+
+        // Prepare images array (you can add more images if needed)
+        const imageUrls = [];
+        if (response.data.mt5_chart) imageUrls.push(response.data.mt5_chart);
+        if (response.data.tradeview_chart) imageUrls.push(response.data.tradeview_chart);
+        if (response.data.mt5_positions) imageUrls.push(response.data.mt5_positions);
+
+        setImages(imageUrls);
       } catch (error) {
         console.error('Error fetching risk trade details:', error);
         alert('Failed to fetch risk trade details.');
@@ -23,6 +34,34 @@ const RiskTradeDetails = () => {
 
     fetchRiskTrade();
   }, [id]);
+
+  const openModal = (index) => {
+    setCurrentImageIndex(index);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  const nextImage = () => {
+    if (currentImageIndex < images.length - 1) {
+      setCurrentImageIndex(currentImageIndex + 1);
+    }
+  };
+
+  const prevImage = () => {
+    if (currentImageIndex > 0) {
+      setCurrentImageIndex(currentImageIndex - 1);
+    }
+  };
+
+  const handleModalClick = (e) => {
+    // Close modal if clicked outside the modal content (on the overlay)
+    if (e.target.classList.contains('modal-overlay')) {
+      closeModal();
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -60,26 +99,41 @@ const RiskTradeDetails = () => {
           </div>
         </section>
 
-        {/* Chart Section */}
+        {/* Chart Section - Arrange images in a top row */}
         <section className="space-y-4">
           <h3 className="text-2xl font-semibold text-gray-800">Visual Analysis</h3>
-          <div className="space-y-2">
+          <div className="flex justify-between gap-4">
             {riskTrade.mt5_chart && (
-              <div>
+              <div className="flex-1">
                 <h4 className="font-medium text-gray-700">MT5 Chart</h4>
-                <img src={riskTrade.mt5_chart} alt="MT5 Chart" className="w-full h-auto border rounded-md shadow-lg" />
+                <img
+                  src={riskTrade.mt5_chart}
+                  alt="MT5 Chart"
+                  className="w-full h-auto border rounded-md shadow-lg cursor-pointer"
+                  onClick={() => openModal(0)}
+                />
               </div>
             )}
             {riskTrade.tradeview_chart && (
-              <div>
+              <div className="flex-1">
                 <h4 className="font-medium text-gray-700">TradeView Chart</h4>
-                <img src={riskTrade.tradeview_chart} alt="TradeView Chart" className="w-full h-auto border rounded-md shadow-lg" />
+                <img
+                  src={riskTrade.tradeview_chart}
+                  alt="TradeView Chart"
+                  className="w-full h-auto border rounded-md shadow-lg cursor-pointer"
+                  onClick={() => openModal(1)}
+                />
               </div>
             )}
             {riskTrade.mt5_positions && (
-              <div>
+              <div className="flex-1">
                 <h4 className="font-medium text-gray-700">MT5 Positions</h4>
-                <img src={riskTrade.mt5_positions} alt="MT5 Positions" className="w-full h-auto border rounded-md shadow-lg" />
+                <img
+                  src={riskTrade.mt5_positions}
+                  alt="MT5 Positions"
+                  className="w-full h-auto border rounded-md shadow-lg cursor-pointer"
+                  onClick={() => openModal(2)}
+                />
               </div>
             )}
           </div>
@@ -96,6 +150,44 @@ const RiskTradeDetails = () => {
           </button>
         </section>
       </div>
+
+      {/* Modal for Image Viewing */}
+      {modalOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 modal-overlay"
+          onClick={handleModalClick} // Close on overlay click
+        >
+          <div className="relative max-w-3xl w-full bg-white p-8 rounded-lg shadow-lg">
+            <button
+              className="absolute top-0 right-0 mt-4 mr-4 text-white text-xl"
+              onClick={closeModal}
+            >
+              &times;
+            </button>
+            <img
+              src={images[currentImageIndex]}
+              alt="Modal Image"
+              className="w-full h-auto border rounded-md shadow-lg"
+            />
+            <div className="flex justify-between mt-4">
+              <button
+                onClick={prevImage}
+                disabled={currentImageIndex === 0}
+                className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 disabled:bg-gray-300"
+              >
+                Prev
+              </button>
+              <button
+                onClick={nextImage}
+                disabled={currentImageIndex === images.length - 1}
+                className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 disabled:bg-gray-300"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
