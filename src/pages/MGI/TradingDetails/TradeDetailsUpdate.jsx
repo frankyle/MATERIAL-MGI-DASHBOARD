@@ -107,6 +107,19 @@ const TradeDetailsUpdate = () => {
             />
           </div>
 
+
+<div> 
+<select
+            name="trade_signal"
+            value={formData.trade_signal}
+            onChange={handleInputChange}
+            className="border border-gray-300 p-2 rounded"
+          >
+            <option value="">Select Trade Signal</option>
+            <option value="BUYS">BUYS</option>
+            <option value="SELLS">SELLS</option>
+          </select>
+</div>
           <div className="flex flex-col gap-2">
           <label className="flex items-center space-x-2">
             <input

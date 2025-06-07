@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: 'https://mgi-engineering.onrender.com',
 });
 
 // Request Interceptor: Add Authorization Header
@@ -29,7 +29,7 @@ axiosInstance.interceptors.response.use(
         const refreshToken = localStorage.getItem('refreshToken');
         if (refreshToken) {
           const response = await axios.post(
-            'http://localhost:8000/auth/refresh/',
+            'https://mgi-engineering.onrender.com/auth/refresh/',
             { refresh: refreshToken }
           );
 

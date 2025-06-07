@@ -63,8 +63,8 @@ const TradeReasonsUpdate = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      alert('Trade reasons updated successfully');
       navigate(`/trading-reasons`);
+      alert('Trade reasons updated successfully');
     } catch (error) {
       console.error('Error updating trade reasons:', error);
       alert('Failed to update trade reasons');
